@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UOB Alpha | Premium Financial Information Consultancy</title>
+    <style>
+        /* Global Color Variables */
+        :root {
+            --main: #A41623;
+            --secondary: #006466;
+            --accent: #F2994A;
+            --bg: #6D5D4B;
+            --text: #FFF8E6;
+            --nav-bg: #2E201B;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        button, input, textarea {
+            font-family: inherit;
+        }
+
+        /* Navigation Bar */
+        header {
+            background-color: var(--nav-bg);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .logo span {
+            color: var(--main);
+        }
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+        }
+        .nav-link {
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: var(--main);
+            color: #fff;
+        }
+        .nav-link.active {
+            background-color: var(--secondary);
+        }
+        /* Mobile Nav Toggle */
+        .mobile-toggle {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        /* Page Section Base - All Subpages Hidden By Default */
+        .page-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: none;
+            min-height: calc(100vh - 82px);
+        }
+        .page-section.active {
+            display: block;
+        }
+        .section-title {
+            font-size: 2.4rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            border-left: 5px solid var(--main);
+            padding-left: 1rem;
+        }
+        .section-desc {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 900px;
+        }
+
+        /* Hero Banner Home Page */
+        .hero-block {
+            width: 100%;
+            margin: 2rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+        .hero-img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            display: block;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        .grid-img-card {
+            border-radius: 8px;
+            overflow: hidden;
+            height: 240px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .grid-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Service Cards */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .service-card {
+            background-color: rgba(46, 32, 27, 0.7);
+            padding: 2rem;
+            border-radius: 10px;
+            border-top: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-top-color: var(--main);
+        }
+        .service-card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        .service-card .service-detail {
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            color: #e0d8c8;
+            border-top: 1px solid rgba(242, 153, 74, 0.2);
+            padding-top: 1rem;
+        }
+
+        /* Floating Side Advertisement Bars (Draggable + Closeable) */
+        .side-ad {
+            width: 180px;
+            background: linear-gradient(145deg, var(--secondary), var(--main));
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+            position: fixed;
+            top: 200px;
+            cursor: grab;
+            z-index: 900;
+            user-select: none;
+        }
+        .side-ad:active {
+            cursor: grabbing;
+        }
+        .ad-left {
+            left: 12px;
+        }
+        .ad-right {
+            right: 12px;
+        }
+        .ad-close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            text-align: center;
+            line-height: 22px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+        }
+        .ad-title {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+
+        /* Contact Form Style */
+        .contact-form-wrap {
+            max-width: 700px;
+            background-color: rgba(46,32,27,0.75);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        .form-row {
+            margin-bottom: 1.5rem;
+        }
+        .form-row label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--text);
+            color: var(--nav-bg);
+            font-size: 1rem;
+        }
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        .submit-btn {
+            background-color: var(--main);
+            color: #fff;
+            border: none;
+            padding: 1rem 2.2rem;
+            font-size: 1.05rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: var(--accent);
+            color: var(--nav-bg);
+        }
+        .success-alert {
+            margin-top: 1.2rem;
+            padding: 1rem;
+            background-color: rgba(0,100,102,0.8);
+            border-radius: 6px;
+            display: none;
+        }
+        .contact-info-block {
+            background: rgba(46,32,27,0.65);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        .contact-info-block h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .contact-line {
+            margin: 0.8rem 0;
+            font-size: 1.05rem;
+        }
+
+        /* Team Member Card */
+        .team-member-card {
+            background-color: rgba(46, 32, 27, 0.7);
+            padding: 1.8rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .team-member-card h4 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .team-member-card .member-title {
+            color: #e0d8c8;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .team-member-card .member-bio {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--nav-bg);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Mobile Responsive Adjustment */
+        @media (max-width: 992px) {
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--nav-bg);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.2rem;
+                display: none;
+            }
+            .nav-menu.show {
+                display: flex;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .image-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+            .side-ad {
+                width: 140px;
+                font-size: 0.85rem;
+            }
+            .hero-img {
+                height: 320px;
+            }
+        }
+        @media (max-width: 576px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+            .side-ad {
+                display: none;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Left Advertisement Bar (Draggable & Closeable) -->
+    <div class="side-ad ad-left" id="adLeft">
+        <span class="ad-close" onclick="closeAd('adLeft')">×</span>
+        <div class="ad-title">Premium Consult Package</div>
+        <p>Exclusive financial data analysis for enterprise clients</p>
+    </div>
+    <!-- Floating Right Advertisement Bar (Draggable & Closeable) -->
+    <div class="side-ad ad-right" id="adRight">
+        <span class="ad-close" onclick="closeAd('adRight')">×</span>
+        <div class="ad-title">Free Initial Consult</div>
+        <p>Book a 30 mins strategy session with our senior analyst</p>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">UOB <span>Alpha</span></div>
+            <div class="mobile-toggle" id="mobileMenuBtn">☰</div>
+            <ul class="nav-menu" id="navMenuList">
+                <li><a href="#home" class="nav-link active" data-target="home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-target="about">About Us</a></li>
+                <li><a href="#services" class="nav-link" data-target="services">Our Services</a></li>
+                <li><a href="#team" class="nav-link" data-target="team">Our Team</a></li>
+                <li><a href="#contact" class="nav-link" data-target="contact">Contact Us</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Home Page Section -->
+    <section class="page-section active" id="home">
+        <h2 class="section-title">Welcome to UOB Alpha Financial Consultancy</h2>
+        <p class="section-desc">UOB Alpha is a top-tier financial information consulting firm headquartered in Nottingham, England. We deliver precise market intelligence, asset analysis, investment strategy planning and global financial data consulting services for institutional investors, corporate enterprises and high-net-worth individuals worldwide.</p>
+
+        <!-- Main Hero Banner Image -->
+        <div class="hero-block">
+            <img class="hero-img" src="https://cowierhametd475-blip.github.io/325-12/41.jpg" alt="UOB Alpha Financial Hero Visual">
+        </div>
+
+        <!-- Multi Image Grid Block -->
+        <h3 style="margin:3rem 0 1rem; color:var(--accent); font-size:1.6rem">Our Corporate Scenes & Market Analysis Visuals</h3>
+        <div class="image-grid">
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/42.jpg" alt="Financial Data Dashboard">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/43.jpg" alt="Corporate Consult Meeting">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/44.jpg" alt="Global Market Research">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/45.jpg" alt="Financial Report Analysis">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/46.jpg" alt="Investment Strategy Briefing">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/47.jpg" alt="UK Financial Office">
+            </div>
+        </div>
+
+        <div style="margin-top:4rem;">
+            <h3 style="color:var(--accent); font-size:1.6rem;">Why Choose UOB Alpha?</h3>
+            <ul style="margin-top:1.2rem; font-size:1.05rem;">
+                <li>• Local UK registration with professional financial analyst team (FCA regulated)</li>
+                <li>• Real-time global capital market data & customized research reports (updated every 15 mins)</li>
+                <li>• Strict confidential client data protection mechanism (ISO 27001 certified)</li>
+                <li>• One-stop financial consulting solution for cross-border investment (covering 28+ countries)</li>
+                <li>• 95% client retention rate with personalized post-service follow-up</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- About Us Page Section -->
+    <section class="page-section" id="about">
+        <h2 class="section-title">About UOB Alpha</h2>
+        <p class="section-desc">Founded in 2010 in Nottingham, United Kingdom, UOB Alpha specializes in independent financial information consulting, focusing on transparent, objective and data-driven financial advisory solutions for clients across Europe and international markets. Over the past 16 years, we have served more than 2,000 clients including multinational corporations, asset management firms, and high-net-worth individuals from 40+ countries.</p>
+
+        <div style="background:rgba(46,32,27,0.6); padding:2rem; border-radius:10px; margin:2rem 0;">
+            <h3 style="color:var(--accent); margin-bottom:1rem;">Our Corporate Mission</h3>
+            <p>To provide reliable, actionable financial intelligence to help every client make rational investment and business financial decisions based on verified market data and professional risk assessment. We are committed to eliminating information asymmetry in the financial market and empowering clients with data-backed insights to achieve their financial goals.</p>
+            <p style="margin-top:1rem; font-size:0.95rem;">Our mission is rooted in the belief that every investor deserves access to unbiased, high-quality financial analysis—regardless of their portfolio size or industry background.</p>
+        </div>
+
+        <div style="background:rgba(0,100,102,0.35); padding:2rem; border-radius:10px; margin:2rem 0;">
+            <h3 style="color:var(--accent); margin-bottom:1rem;">Our Core Values</h3>
+            <ul style="margin-top:1rem;">
+                <li><strong>Integrity:</strong> Fully transparent research without biased third-party commissions; we never accept kickbacks from financial institutions for recommending specific products.</li>
+                <li><strong>Precision:</strong> Multi-source data cross-verification for all analysis reports (integrating data from Bloomberg, Reuters, and our proprietary research network).</li>
+                <li><strong>Confidentiality:</strong> End-to-end privacy protection for all client information (encrypted data storage, strict employee NDA agreements, and regular security audits).</li>
+                <li><strong>Innovation:</strong> Continuously update financial analysis models for global markets; our R&D team invests 15% of annual revenue in AI-driven market prediction tools.</li>
+                <li><strong>Client-Centricity:</strong> Tailor every solution to the unique needs of each client, with dedicated account managers assigned to all enterprise clients.</li>
+            </ul>
+        </div>
+
+        <div style="margin:3rem 0;">
+            <h3 style="color:var(--accent); margin-bottom:1.5rem; font-size:1.5rem;">Our Development Milestones</h3>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:1.5rem;">
+                <div style="background:rgba(46,32,27,0.5); padding:1.5rem; border-radius:8px;">
+                    <h4 style="color:var(--accent);">2010</h4>
+                    <p>Founded in Nottingham's historic Lace Market district with a team of 5 financial analysts</p>
+                </div>
+                <div style="background:rgba(46,32,27,0.5); padding:1.5rem; border-radius:8px;">
+                    <h4 style="color:var(--accent);">2015</h4>
+                    <p>Expanded to EU markets, opened satellite office in Frankfurt, Germany</p>
+                </div>
+                <div style="background:rgba(46,32,27,0.5); padding:1.5rem; border-radius:8px;">
+                    <h4 style="color:var(--accent);">2020</h4>
+                    <p>Launched AI-powered market analysis platform, serving 1,500+ enterprise clients</p>
+                </div>
+                <div style="background:rgba(46,32,27,0.5); padding:1.5rem; border-radius:8px;">
+                    <h4 style="color:var(--accent);">2024</h4>
+                    <p>Achieved FCA full regulatory approval, expanded team to 45 professionals</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-img-card" style="max-width:700px; margin:3rem auto;">
+            <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/48.jpg" alt="UOB Alpha Office The Cornerhouse Nottingham">
+        </div>
+    </section>
+
+    <!-- Our Services Page Section -->
+    <section class="page-section" id="services">
+        <h2 class="section-title">Our Professional Financial Consultancy Services</h2>
+        <p class="section-desc">UOB Alpha covers full-spectrum financial information consulting, tailored for individual investors, small-medium enterprises and institutional asset management clients. Our services are designed to address the unique challenges of today's global financial landscape, combining deep industry expertise with cutting-edge data analytics to deliver measurable results.</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Global Market Data Analysis</h3>
+                <p>Real-time tracking of stock, forex, commodity and bond markets, customized daily/weekly market trend analysis reports.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>Real-time data feeds (15-minute refresh rate)</li>
+                        <li>Customizable market watchlists</li>
+                        <li>Historical trend comparison (5/10/20-year data)</li>
+                        <li>Volatility risk scoring for target markets</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card">
+                <h3>Cross-Border Investment Consulting</h3>
+                <p>UK & European asset allocation guidance, overseas investment risk evaluation, tax & regulatory financial advisory.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>EU/UK regulatory compliance assessment</li>
+                        <li>Cross-border tax optimization strategies</li>
+                        <li>Currency risk hedging recommendations</li>
+                        <li>Local market entry feasibility studies</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card">
+                <h3>Enterprise Financial Research</h3>
+                <p>Corporate financial statement auditing analysis, industry valuation research, merger & acquisition financial consulting.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>Financial due diligence for M&A</li>
+                        <li>Industry benchmarking analysis</li>
+                        <li>Valuation model construction</li>
+                        <li>Financial health score assessment</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card">
+                <h3>Personal Wealth Strategy Planning</h3>
+                <p>Customized asset portfolio layout, risk tolerance assessment, long-term wealth preservation planning for high-net-worth clients.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>Personalized risk tolerance testing</li>
+                        <li>Multi-asset portfolio optimization</li>
+                        <li>Succession planning for family wealth</li>
+                        <li>Tax-efficient wealth management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card">
+                <h3>Financial Risk Assessment</h3>
+                <p>Market volatility risk simulation, investment loss early warning, comprehensive risk control framework design.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>Stress testing for investment portfolios</li>
+                        <li>Loss probability modeling</li>
+                        <li>Risk mitigation strategy design</li>
+                        <li>Real-time risk alert system setup</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-card">
+                <h3>Exclusive Custom Research Reports</h3>
+                <p>On-demand deep industry research, targeted company financial profiling, confidential bespoke market intelligence documents.</p>
+                <div class="service-detail">
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>White-label report customization</li>
+                        <li>Competitor benchmark analysis</li>
+                        <li>Emerging market opportunity identification</li>
+                        <li>Executive-level presentation delivery</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin:4rem 0; background:rgba(0,100,102,0.2); padding:2rem; border-radius:10px;">
+            <h3 style="color:var(--accent); margin-bottom:1rem;">Service Delivery Model</h3>
+            <p>All our services follow a 4-step process: <strong>1)</strong> Needs Assessment & Goal Definition → <strong>2)</strong> Data Collection & Analysis → <strong>3)</strong> Solution Design & Presentation → <strong>4)</strong> Implementation Support & Ongoing Review. We provide regular progress updates (weekly/monthly) and adjust strategies based on market changes or client feedback.</p>
+        </div>
+
+        <div class="hero-block" style="margin-top:2rem;">
+            <img class="hero-img" src="https://cowierhametd475-blip.github.io/325-12/49.jpg" alt="Financial Service Analysis Chart">
+        </div>
+    </section>
+
+    <!-- Our Team Page Section -->
+    <section class="page-section" id="team">
+        <h2 class="section-title">Our Senior Analyst Team</h2>
+        <p class="section-desc">All core team members hold certified financial professional qualifications with years of experience working in UK and international financial institutions. Our team combines academic excellence with practical market experience, ensuring that every client receives advice from seasoned professionals who understand both the theoretical and practical aspects of global finance.</p>
+
+        <div class="image-grid">
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/50.jpg" alt="Chief Market Analyst">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/51.jpg" alt="Cross-Border Investment Advisor">
+            </div>
+            <div class="grid-img-card">
+                <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/52.jpg" alt="Enterprise Financial Research Lead">
+            </div>
+        </div>
+
+        <div style="margin-top:3rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:2rem;">
+            <div class="team-member-card">
+                <h4>Dr. James Harrington</h4>
+                <div class="member-title">Chief Market Analyst</div>
+                <div class="member-bio">
+                    <p>PhD in Financial Economics (University of Oxford), CFA Charterholder with 12 years of global capital market research experience. Specializes in European stock and foreign exchange trend forecasting, and has published 8 peer-reviewed papers on market volatility analysis. Previously served as Senior Analyst at Barclays Capital.</p>
+                    <p style="margin-top:1rem;">Areas of expertise: European equity markets, forex risk management, quantitative analysis</p>
+                </div>
+            </div>
+            <div class="team-member-card">
+                <h4>Sophie Laurent</h4>
+                <div class="member-title">Senior Investment Consultant</div>
+                <div class="member-bio">
+                    <p>LLM in International Financial Law (University of Amsterdam), CEFA certified with 9 years of cross-border investment advisory experience. Expert in UK/EU asset regulation and tax optimization, with a focus on serving international high-net-worth clients. Formerly with Deloitte's Global Wealth Advisory team.</p>
+                    <p style="margin-top:1rem;">Areas of expertise: Cross-border wealth allocation, tax planning, regulatory compliance</p>
+                </div>
+            </div>
+            <div class="team-member-card">
+                <h4>Michael Okonjo</h4>
+                <div class="member-title">Financial Risk Director</div>
+                <div class="member-bio">
+                    <p>FRM (Financial Risk Manager), MBA (London Business School) with 15 years of risk control experience. Former bank risk control specialist at HSBC, designs quantitative risk assessment models for institutional customers. Specializes in stress testing and scenario analysis for large investment portfolios.</p>
+                    <p style="margin-top:1rem;">Areas of expertise: Market risk modeling, portfolio stress testing, risk mitigation</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top:4rem; background:rgba(46,32,27,0.6); padding:2rem; border-radius:10px;">
+            <h3 style="color:var(--accent); margin-bottom:1.5rem;">Our Team Credentials</h3>
+            <ul style="list-style: disc; margin-left: 1.5rem; font-size:1.05rem;">
+                <li>100% of senior analysts hold CFA/FRM/CEFA professional certifications</li>
+                <li>Average industry experience: 11 years (range: 7-22 years)</li>
+                <li>Team members from top institutions: Oxford, Cambridge, LSE, INSEAD</li>
+                <li>Multilingual capability: English, Mandarin, French, German, Spanish, Arabic</li>
+                <li>Regular contributors to financial publications: Financial Times, Bloomberg, The Economist</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Contact Us Page Section -->
+    <section class="page-section" id="contact">
+        <h2 class="section-title">Contact UOB Alpha</h2>
+        <p class="section-desc">Fill in the form below to send us your consultation inquiry. All submissions will receive a success confirmation instantly, and our consultant will reply within 24 working hours. For urgent requests, please call our direct line or visit our Nottingham office during business hours—our team is ready to assist with your financial consulting needs.</p>
+
+        <!-- Contact Submission Form -->
+        <div class="contact-form-wrap">
+            <form id="contactForm">
+                <div class="form-row">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" class="form-input" required placeholder="Enter your full name">
+                </div>
+                <div class="form-row">
+                    <label for="contactMail">Email Address</label>
+                    <input type="email" id="contactMail" class="form-input" required placeholder="yourmail@example.com">
+                </div>
+                <div class="form-row">
+                    <label for="contactPhone">Phone Number</label>
+                    <input type="tel" id="contactPhone" class="form-input" placeholder="Your contact telephone (country code included, e.g. +44 7xxxxxxxxx)">
+                </div>
+                <div class="form-row">
+                    <label for="serviceType">Type of Consultation Required</label>
+                    <select id="serviceType" class="form-input" style="height: 50px;">
+                        <option value="">Select a service category</option>
+                        <option value="market-analysis">Global Market Data Analysis</option>
+                        <option value="cross-border">Cross-Border Investment Consulting</option>
+                        <option value="enterprise">Enterprise Financial Research</option>
+                        <option value="wealth">Personal Wealth Strategy Planning</option>
+                        <option value="risk">Financial Risk Assessment</option>
+                        <option value="custom">Exclusive Custom Research Reports</option>
+                        <option value="other">Other Inquiry</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="messageContent">Consultation Message</label>
+                    <textarea id="messageContent" class="form-textarea" required placeholder="Describe your financial consulting requirements, including your goals, timeline, and any specific areas of interest..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Inquiry</button>
+                <div class="success-alert" id="submitSuccess">Your message has been submitted successfully! Our team will contact you within 24 working hours.</div>
+            </form>
+        </div>
+
+        <!-- Company Address & Contact Info -->
+        <div class="contact-info-block">
+            <h3>Our Office Information</h3>
+            <div class="contact-line"><strong>Company Address:</strong> 14 Burton Street, The Cornerhouse, Nottingham NG1 4BU, England</div>
+            <div class="contact-line"><strong>Direct Contact Phone:</strong> +44 7618026156</div>
+            <div class="contact-line"><strong>General Enquiry Email:</strong> info@uobalpha.com</div>
+            <div class="contact-line"><strong>Business Hours:</strong> Monday - Friday 09:00 - 18:00 GMT (closed on UK public holidays)</div>
+            <div class="contact-line"><strong>Service Region:</strong> United Kingdom, European Union, North America, Asia Pacific (global cross-border financial consulting)</div>
+            <div class="contact-line"><strong>Regulatory Information:</strong> Authorized and regulated by the Financial Conduct Authority (FCA) - FRN: 987654</div>
+        </div>
+
+        <div class="grid-img-card" style="max-width:800px; margin-top:3rem;">
+            <img class="grid-img" src="https://cowierhametd475-blip.github.io/325-12/53.jpg" alt="The Cornerhouse Nottingham Office Building">
+        </div>
+    </section>
+
+    <!-- Page Footer -->
+    <footer>
+        <p>&copy; 2026 UOB Alpha Financial Information Consultancy. All Rights Reserved. Registered in England and Wales (Company No. 12345678) | Registered Office: 14 Burton Street, Nottingham NG1 4BU</p>
+        <p style="margin-top:1rem; font-size:0.9rem;">Regulated by the Financial Conduct Authority (FCA) | ISO 27001 Certified for Information Security</p>
+    </footer>
+
+    <script>
+        // 1. Navigation Page Switch Logic (Desktop + Mobile)
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenuList = document.getElementById('navMenuList');
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenuList.classList.toggle('show');
+        });
+
+        // Switch subpage & set active nav link
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                // Hide all pages
+                pageSections.forEach(page => page.classList.remove('active'));
+                // Show target page
+                document.getElementById(targetId).classList.add('active');
+                // Reset nav active state
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                // Close mobile menu after click
+                navMenuList.classList.remove('show');
+                // Scroll page top
+                window.scrollTo({top:0, behavior:'smooth'});
+            })
+        });
+
+        // 2. Contact Form Submit Always Success Logic
+        const contactForm = document.getElementById('contactForm');
+        const successAlert = document.getElementById('submitSuccess');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            successAlert.style.display = 'block';
+            // Reset form after 2 seconds
+            setTimeout(() => {
+                contactForm.reset();
+                successAlert.style.display = 'none';
+            }, 3000);
+        });
+
+        // 3. Close Floating Advertisement Function
+        function closeAd(adId) {
+            document.getElementById(adId).style.display = 'none';
+        }
+
+        // 4. Draggable Floating Ad Bars Logic
+        function makeDraggable(elementId) {
+            const dragEl = document.getElementById(elementId);
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            dragEl.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                dragEl.style.top = (dragEl.offsetTop - pos2) + "px";
+                dragEl.style.left = (dragEl.offsetLeft - pos1) + "px";
+                dragEl.style.right = "auto";
+            }
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+        // Activate drag for both ad bars
+        makeDraggable('adLeft');
+        makeDraggable('adRight');
+    </script>
+</body>
+</html>
